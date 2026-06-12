@@ -1,0 +1,128 @@
+- id: inn
+  category_group: ru_identifier
+  description: Russian INN
+  severity: high
+  name_patterns: ["(^|_)(inn|tax_?id)($|_)"]
+  exact_name_patterns: ["inn"]
+  path_patterns: ["(^|\\.)(inn|tax_?id)($|\\.)"]
+  exact_path_patterns: ["inn"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: inn
+  value_patterns: []
+  confidence_boost: high
+  help_text: "INN is a Russian tax identifier"
+  remediation: "Restrict access, validate collection purpose, and mask in non-production"
+- id: snils
+  category_group: ru_identifier
+  description: Russian SNILS
+  severity: high
+  name_patterns: ["(^|_)(snils|insurance_?number)($|_)"]
+  exact_name_patterns: ["snils"]
+  path_patterns: ["(^|\\.)(snils|insurance_?number)($|\\.)"]
+  exact_path_patterns: ["snils"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: snils
+  value_patterns: []
+  confidence_boost: high
+  help_text: "SNILS is a Russian personal insurance identifier"
+  remediation: "Restrict access and mask in lower environments"
+- id: passport_rf
+  category_group: ru_identifier
+  description: Russian passport-like value
+  severity: high
+  name_patterns: ["(^|_)(passport|passport_?rf|passport_?number)($|_)"]
+  exact_name_patterns: ["passport", "passport_rf", "passport_number"]
+  path_patterns: ["(^|\\.)(passport|passport_?rf|passport_?number)($|\\.)"]
+  exact_path_patterns: ["passport", "passport_rf", "passport_number"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: passport_rf
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Passport-like values are strong identity documents"
+  remediation: "Restrict access, encrypt if required, and mask outside production"
+- id: ogrn
+  category_group: ru_identifier
+  description: Russian OGRN
+  severity: high
+  name_patterns: ["(^|_)ogrn($|_)"]
+  exact_name_patterns: ["ogrn"]
+  path_patterns: ["(^|\\.)ogrn($|\\.)"]
+  exact_path_patterns: ["ogrn"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: ogrn
+  value_patterns: []
+  confidence_boost: high
+  help_text: "OGRN is a Russian organization registration identifier"
+  remediation: "Treat as identifier data and review exposure"
+- id: ogrnip
+  category_group: ru_identifier
+  description: Russian OGRNIP
+  severity: high
+  name_patterns: ["(^|_)ogrnip($|_)"]
+  exact_name_patterns: ["ogrnip"]
+  path_patterns: ["(^|\\.)ogrnip($|\\.)"]
+  exact_path_patterns: ["ogrnip"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: ogrnip
+  value_patterns: []
+  confidence_boost: high
+  help_text: "OGRNIP is a Russian individual entrepreneur registration identifier"
+  remediation: "Treat as identifier data and review exposure"
+- id: kpp
+  category_group: ru_identifier
+  description: Russian KPP
+  severity: high
+  name_patterns: ["(^|_)kpp($|_)"]
+  exact_name_patterns: ["kpp"]
+  path_patterns: ["(^|\\.)kpp($|\\.)"]
+  exact_path_patterns: ["kpp"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: kpp
+  value_patterns: []
+  confidence_boost: high
+  help_text: "KPP is a Russian tax registration code"
+  remediation: "Treat as identifier data and review exposure"
+- id: full_name_cyrillic
+  category_group: identity
+  description: Cyrillic full name
+  severity: medium
+  name_patterns: ["(^|_)(fio|full_?name|name)($|_)"]
+  exact_name_patterns: ["fio", "full_name"]
+  path_patterns: ["(^|\\.)(fio|full_?name|name)($|\\.)"]
+  exact_path_patterns: ["fio", "full_name"]
+  name_anti_patterns: ["(^|_)(file|host|service|role)_?name($|_)"]
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: cyrillic_full_name
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "Cyrillic names are personal data when tied to a person record"
+  remediation: "Review retention and masking in lower environments"
+- id: patronymic
+  category_group: identity
+  description: Russian patronymic
+  severity: medium
+  name_patterns: ["(^|_)(patronymic|middle_?name|otchestvo)($|_)"]
+  exact_name_patterns: ["patronymic", "middle_name", "otchestvo"]
+  path_patterns: ["(^|\\.)(patronymic|middle_?name|otchestvo)($|\\.)"]
+  exact_path_patterns: ["patronymic", "middle_name", "otchestvo"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: cyrillic_name_token
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "Patronymics are identity data in Russian contexts"
+  remediation: "Review retention and masking in lower environments"

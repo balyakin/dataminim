@@ -1,0 +1,336 @@
+- id: email
+  category_group: contact
+  description: Email address
+  severity: high
+  name_patterns: ["(^|_)e?mail($|_)", "email_address"]
+  exact_name_patterns: ["email"]
+  path_patterns: ["(^|\\.)e?mail($|\\.)"]
+  exact_path_patterns: ["email"]
+  name_anti_patterns: ["(^|_)(example|sample|dummy|test)_?email($|_)"]
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: email
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Email addresses are contact data and may be personal data even when used as login identifiers"
+  remediation: "Review collection purpose, access controls, retention, and masking in non-production exports"
+- id: phone
+  category_group: contact
+  description: Phone number
+  severity: high
+  name_patterns: ["(^|_)(phone|mobile|tel|telephone)($|_)"]
+  exact_name_patterns: ["phone", "mobile"]
+  path_patterns: ["(^|\\.)(phone|mobile|tel|telephone)($|\\.)"]
+  exact_path_patterns: ["phone", "mobile"]
+  name_anti_patterns: ["(^|_)(example|sample|dummy|test)_?(phone|mobile)($|_)"]
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: phone
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Phone numbers are direct contact identifiers"
+  remediation: "Review retention, consent, and masking in support exports"
+- id: full_name
+  category_group: identity
+  description: Full name
+  severity: medium
+  name_patterns: ["(^|_)(full_?name|display_?name|customer_?name|person_?name)($|_)"]
+  exact_name_patterns: ["full_name", "display_name"]
+  path_patterns: ["(^|\\.)(full_?name|display_?name|customer_?name|person_?name)($|\\.)"]
+  exact_path_patterns: ["full_name", "display_name"]
+  name_anti_patterns: ["(^|_)(file|host|service|role|permission)_?name($|_)"]
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: full_name
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "Names can identify a person alone or together with other data"
+  remediation: "Limit exposure in logs, analytics, and lower environments"
+- id: first_name
+  category_group: identity
+  description: First name
+  severity: medium
+  name_patterns: ["(^|_)(first_?name|given_?name)($|_)"]
+  exact_name_patterns: ["first_name", "given_name"]
+  path_patterns: ["(^|\\.)(first_?name|given_?name)($|\\.)"]
+  exact_path_patterns: ["first_name", "given_name"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: name_token
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "First names are personal data when tied to user records"
+  remediation: "Review whether the value is needed in operational datasets"
+- id: last_name
+  category_group: identity
+  description: Last name
+  severity: medium
+  name_patterns: ["(^|_)(last_?name|family_?name|surname)($|_)"]
+  exact_name_patterns: ["last_name", "family_name", "surname"]
+  path_patterns: ["(^|\\.)(last_?name|family_?name|surname)($|\\.)"]
+  exact_path_patterns: ["last_name", "family_name", "surname"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: name_token
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "Last names are personal data when tied to user records"
+  remediation: "Review whether the value is needed in operational datasets"
+- id: ip_address
+  category_group: network
+  description: IP address
+  severity: medium
+  name_patterns: ["(^|_)(ip|ip_?addr|ip_?address|remote_?addr|client_?ip)($|_)"]
+  exact_name_patterns: ["ip", "ip_address", "client_ip"]
+  path_patterns: ["(^|\\.)(ip|ip_?addr|ip_?address|remote_?addr|client_?ip)($|\\.)"]
+  exact_path_patterns: ["ip", "ip_address", "client_ip"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: ip
+  value_patterns: []
+  confidence_boost: high
+  help_text: "IP addresses may identify devices, users, or locations"
+  remediation: "Review log retention and anonymization requirements"
+- id: credit_card
+  category_group: payment
+  description: Credit card number
+  severity: critical
+  name_patterns: ["(^|_)(card_?number|pan|credit_?card|cc_?number)($|_)"]
+  exact_name_patterns: ["card_number", "pan", "credit_card"]
+  path_patterns: ["(^|\\.)(card_?number|pan|credit_?card|cc_?number)($|\\.)"]
+  exact_path_patterns: ["card_number", "pan", "credit_card"]
+  name_anti_patterns: ["(^|_)(last4|last_?four)($|_)"]
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: credit_card
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Payment card numbers are highly sensitive and may be regulated"
+  remediation: "Avoid storing PAN unless explicitly required; use a payment provider token instead"
+- id: date_of_birth
+  category_group: identity
+  description: Date of birth
+  severity: high
+  name_patterns: ["(^|_)(dob|birth_?date|date_?of_?birth|birthday)($|_)"]
+  exact_name_patterns: ["dob", "date_of_birth", "birth_date"]
+  path_patterns: ["(^|\\.)(dob|birth_?date|date_?of_?birth|birthday)($|\\.)"]
+  exact_path_patterns: ["dob", "date_of_birth", "birth_date"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "date", "timestamp"]
+  value_validator: dob
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Dates of birth are strong identity attributes"
+  remediation: "Restrict access and review retention"
+- id: postal_address
+  category_group: location
+  description: Postal address
+  severity: medium
+  name_patterns: ["(^|_)(address|postal_?address|mailing_?address|billing_?address|shipping_?address)($|_)"]
+  exact_name_patterns: ["address", "postal_address"]
+  path_patterns: ["(^|\\.)(address|postal_?address|mailing_?address|billing_?address|shipping_?address)($|\\.)"]
+  exact_path_patterns: ["address", "postal_address"]
+  name_anti_patterns: ["(^|_)(ip|mac)_?address($|_)"]
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: address
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "Postal addresses can identify a person or household"
+  remediation: "Review need-to-know access and non-production masking"
+- id: street
+  category_group: location
+  description: Street address component
+  severity: medium
+  name_patterns: ["(^|_)(street|street_?address|addr1|address_?line1)($|_)"]
+  exact_name_patterns: ["street", "street_address", "address_line1"]
+  path_patterns: ["(^|\\.)(street|street_?address|addr1|address_?line1)($|\\.)"]
+  exact_path_patterns: ["street", "street_address", "address_line1"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: address
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "Street fields can identify a person or household"
+  remediation: "Review retention and masking"
+- id: city
+  category_group: location
+  description: City
+  severity: medium
+  name_patterns: ["(^|_)(city|town|locality)($|_)"]
+  exact_name_patterns: ["city", "town"]
+  path_patterns: ["(^|\\.)(city|town|locality)($|\\.)"]
+  exact_path_patterns: ["city", "town"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: name_token
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "Cities are location data and may be personal in context"
+  remediation: "Review aggregation and retention needs"
+- id: zip
+  category_group: location
+  description: ZIP or postal code
+  severity: medium
+  name_patterns: ["(^|_)(zip|zipcode|postal_?code|postcode)($|_)"]
+  exact_name_patterns: ["zip", "postal_code", "postcode"]
+  path_patterns: ["(^|\\.)(zip|zipcode|postal_?code|postcode)($|\\.)"]
+  exact_path_patterns: ["zip", "postal_code", "postcode"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: zip
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "Postal codes are location data and may be personal in context"
+  remediation: "Review aggregation and retention needs"
+- id: password
+  category_group: secret
+  description: Password
+  severity: critical
+  name_patterns: ["(^|_)(password|passwd|pwd)($|_)"]
+  exact_name_patterns: ["password", "passwd", "pwd"]
+  path_patterns: ["(^|\\.)(password|passwd|pwd)($|\\.)"]
+  exact_path_patterns: ["password", "passwd", "pwd"]
+  name_anti_patterns: ["(^|_)(password_?required|require_?password)($|_)"]
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: entropy
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Password-like fields are critical even when values are hashed elsewhere"
+  remediation: "Store only strong password hashes and verify secrets are not logged or exported"
+- id: password_hash
+  category_group: secret
+  description: Password hash
+  severity: critical
+  name_patterns: ["(^|_)(password_?hash|passwd_?hash|pwd_?hash|bcrypt|argon2)($|_)"]
+  exact_name_patterns: ["password_hash", "pwd_hash"]
+  path_patterns: ["(^|\\.)(password_?hash|passwd_?hash|pwd_?hash|bcrypt|argon2)($|\\.)"]
+  exact_path_patterns: ["password_hash", "pwd_hash"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: password_hash
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Password hashes are critical authentication material"
+  remediation: "Review hashing algorithm, pepper/secret handling, and access controls"
+- id: secret
+  category_group: secret
+  description: Secret
+  severity: critical
+  name_patterns: ["(^|_)(secret|client_?secret|signing_?secret|webhook_?secret)($|_)"]
+  exact_name_patterns: ["secret", "client_secret"]
+  path_patterns: ["(^|\\.)(secret|client_?secret|signing_?secret|webhook_?secret)($|\\.)"]
+  exact_path_patterns: ["secret", "client_secret"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: entropy
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Secrets can grant access to systems or data"
+  remediation: "Move secrets to a secret manager and rotate exposed values"
+- id: token
+  category_group: secret
+  description: Token
+  severity: critical
+  name_patterns: ["(^|_)(token|access_?token|refresh_?token|session_?token|auth_?token)($|_)"]
+  exact_name_patterns: ["token", "access_token", "refresh_token"]
+  path_patterns: ["(^|\\.)(token|access_?token|refresh_?token|session_?token|auth_?token)($|\\.)"]
+  exact_path_patterns: ["token", "access_token", "refresh_token"]
+  name_anti_patterns: ["(^|_)(csrf_?enabled|token_?type)($|_)"]
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "uuid"]
+  value_validator: entropy
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Tokens can authenticate users or services"
+  remediation: "Shorten retention, rotate exposed tokens, and store opaque references where possible"
+- id: api_key
+  category_group: secret
+  description: API key
+  severity: critical
+  name_patterns: ["(^|_)(api_?key|apikey|access_?key)($|_)"]
+  exact_name_patterns: ["api_key", "apikey", "access_key"]
+  path_patterns: ["(^|\\.)(api_?key|apikey|access_?key)($|\\.)"]
+  exact_path_patterns: ["api_key", "apikey", "access_key"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: entropy
+  value_patterns: []
+  confidence_boost: high
+  help_text: "API keys can grant service access"
+  remediation: "Move keys to a secret manager and rotate exposed keys"
+- id: private_key
+  category_group: secret
+  description: Private key
+  severity: critical
+  name_patterns: ["(^|_)(private_?key|rsa_?key|ssh_?key)($|_)"]
+  exact_name_patterns: ["private_key", "ssh_key"]
+  path_patterns: ["(^|\\.)(private_?key|rsa_?key|ssh_?key)($|\\.)"]
+  exact_path_patterns: ["private_key", "ssh_key"]
+  name_anti_patterns: ["(^|_)public_?key($|_)"]
+  path_anti_patterns: ["(^|\\.)public_?key($|\\.)"]
+  applicable_sql_types: ["text"]
+  value_validator: private_key
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Private keys are critical cryptographic secrets"
+  remediation: "Remove from database storage, rotate keys, and use a secret manager"
+- id: geo_latitude
+  category_group: location
+  description: Precise latitude
+  severity: high
+  name_patterns: ["(^|_)(lat|latitude)($|_)"]
+  exact_name_patterns: ["lat", "latitude"]
+  path_patterns: ["(^|\\.)(lat|latitude)($|\\.)"]
+  exact_path_patterns: ["lat", "latitude"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: latitude
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Precise geolocation can reveal sensitive movement or residence data"
+  remediation: "Reduce precision where exact coordinates are not required"
+- id: geo_longitude
+  category_group: location
+  description: Precise longitude
+  severity: high
+  name_patterns: ["(^|_)(lon|lng|longitude)($|_)"]
+  exact_name_patterns: ["lon", "lng", "longitude"]
+  path_patterns: ["(^|\\.)(lon|lng|longitude)($|\\.)"]
+  exact_path_patterns: ["lon", "lng", "longitude"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text", "numeric"]
+  value_validator: longitude
+  value_patterns: []
+  confidence_boost: high
+  help_text: "Precise geolocation can reveal sensitive movement or residence data"
+  remediation: "Reduce precision where exact coordinates are not required"
+- id: user_agent
+  category_group: network
+  description: User agent
+  severity: medium
+  name_patterns: ["(^|_)(user_?agent|ua)($|_)"]
+  exact_name_patterns: ["user_agent"]
+  path_patterns: ["(^|\\.)(user_?agent|ua)($|\\.)"]
+  exact_path_patterns: ["user_agent"]
+  name_anti_patterns: []
+  path_anti_patterns: []
+  applicable_sql_types: ["text"]
+  value_validator: user_agent
+  value_patterns: []
+  confidence_boost: medium
+  help_text: "User agents may identify devices or sessions when combined with logs"
+  remediation: "Review log retention and access controls"
